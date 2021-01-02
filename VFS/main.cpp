@@ -1,94 +1,7 @@
-//This is the header file in which we have included all the necessary header files and the prototypes for the project.
-
-//#define _CRT_SECURE_NO_WARNINGS		//used to hide the warnings
-//#include<stdio.h>
-//#include<stdlib.h>
-//#include<string.h>
-//#include<io.h>
-//#include<malloc.h>
-//
-//#define MAXINODE 50					//we are including maximum 50 inodes here
-//
-//#define READ 1						//used for read instruction
-//#define WRITE 2						//used for write instruction
-//
-//#define MAXFILESIZE 1024			//maximum file size which is in the Data Block (DB) is 1024 bytes
-//
-//#define REGULAR 1					//for regular file
-//#define SPECIAL 2					//for special file
-//
-//#define START 0						
-//#define CURRENT 1
-//#define END 2
-//
-//typedef struct superblock			//structure for superblock
-//{
-//	int TotalInodes;				//count of total inodes
-//	int FreeInode;					//count of free inodes
-//}SUPERBLOCK, * PSUPERBLOCK;
-//
-//typedef struct inode				//structure for every inode in the DILB (Disk Inode List Block)
-//{
-//	char FileName[MAXINODE];		//file name
-//	int InodeNumber;				//inode number
-//	int FileSize;					//file size
-//	int FileActualSize;				//actual file size
-//	int FileType;					//type of the file
-//	char* Buffer;					//buffer where the data is stored 
-//	int LinkCount;
-//	int ReferenceCount;				//referencwe count in the IIT
-//	int permission;					//permission for accessing of the file
-//	struct inode* next;
-//}INODE, * PINODE, ** PPINODE;
-//
-//typedef struct filetable			//structure for File Table block
-//{
-//	int readoffset;
-//	int writeoffset;
-//	int count;
-//	int mode;
-//	PINODE ptrinode;
-//}FILETABLE, * PFILETABLE;
-//
-//typedef struct ufdt					//structure for UFDT (User File Descriptor Table)
-//{
-//	PFILETABLE ptrfiletable;
-//}UFDT;
-//
-////These are the global variables
-//UFDT UFDTArr[MAXINODE];
-//SUPERBLOCK SUPERBLOCKobj;			//object of the superblock
-//PINODE head = NULL;
-//
-//typedef int BOOL;
-//#define TRUE 1
-//#define FALSE 0
-//
-////Prototypes
-//void man(char*);
-//void DisplayHelp();
-//int GetFDFromName(char*);
-//PINODE Get_Inode(char*);
-//void CreateDILB();
-//void InitialiseSuperBlock();
-//int CreateFile(char*, int);
-//int rm_File(char*);
-//int ReadFile(int, char*, int);
-//int WriteFile(int, char*, int);
-//int OpenFile(char*, int);
-//void CloseFileByName1(int);
-//int CloseFileByName2(char*);
-//void CloseAllFile();
-//int LseekFile(int, int, int);
-//void ls_file();
-//int fstat_file(int);
-//int stat_file(char*);
-//int truncate_File(char*);
-//int change_mode(char*, int);
-
 #include "myheader.h"
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /*
 Name of function								: void InitialiseSuperBlock()
 Input parameters								: none
@@ -108,7 +21,9 @@ void InitialiseSuperBlock()
 	SUPERBLOCKobj.TotalInodes = MAXINODE;
 	SUPERBLOCKobj.FreeInode = MAXINODE;
 }
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /*
 Name of function								: void CreateDILB()
 Input parameters								: none
@@ -149,7 +64,9 @@ void CreateDILB()
 	}
 	//printf("\nDILB created successfully\n");
 }
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /*
 Name of function								: int CreateFile(char *name, int permission)
 Input parameters								: name of the file, permission to access the file
@@ -221,7 +138,9 @@ int CreateFile(char* name, int permission)
 
 	return k;
 }
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /*
 Name of function								: int rm_File(char *name)
 Input parameters								: name of the file entered by the user.
@@ -252,6 +171,7 @@ int rm_File(char* name)
 	(SUPERBLOCKobj.FreeInode)++;			//file removed successfully so inode gets added
 	return 0;
 }
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
 Name of function								: void DisplayHelp()
@@ -276,7 +196,9 @@ void DisplayHelp()
 	printf("rm: To delete the file\n");
 	printf("chmod : To change the permissions of the existing file\n");
 }
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /*
 Name of function								: int GetFDFromName(char *name)
 Input parameters								: name of the file entered by the user.
@@ -309,7 +231,9 @@ int GetFDFromName(char* name)
 		return x;
 	}
 }
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /*
 Name of function								: PINODE Get_Inode(char *name)
 Input parameters								: name of the file entered by the user.
@@ -339,7 +263,9 @@ PINODE Get_Inode(char* name)
 
 	return temp1;
 }
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /*
 Name of function								: void ls_file()
 Input parameters								: none
@@ -374,7 +300,9 @@ void ls_file()
 		printf("-------------------------------------------------------------------------\n");
 	}
 }
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /*
 Name of function								: int LseekFile(int fd2, int size, int from)
 Input parameters								: file descriptor, size of the bytes, position of seek
@@ -500,7 +428,9 @@ int LseekFile(int fd2, int size, int from)
 	}
 	return 0;
 }
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /*
 Name of function								: int OpenFile(char *name, int mode)
 Input parameters								: name of the file and mode or permission of the file
@@ -562,7 +492,9 @@ int OpenFile(char* name, int mode)
 
 	return z;
 }
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /*
 Name of function								: int CloseFileByName2(char *name)
 Input parameters								: name of the file
@@ -579,7 +511,9 @@ void CloseFileByName1(int fd4)
 		(UFDTArr[fd4].ptrfiletable->ptrinode->ReferenceCount)--;
 	}
 }
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /*
 Name of function								: int CloseFileByName2(char *name)
 Input parameters								: name of the file
@@ -603,7 +537,9 @@ int CloseFileByName2(char* name)
 	}
 	return q;
 }
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /*
 Name of function								: void CloseAllFile()
 Input parameters								: none
@@ -630,7 +566,9 @@ void CloseAllFile()
 		p++;
 	}
 }
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /*
 Name of function								: int ReadFile(int fd5, char *arr, int isize)
 Input parameters								: file descriptor, data to read, bytes or size of the data to be read
@@ -681,7 +619,9 @@ int ReadFile(int fd5, char* arr, int isize)
 
 	return isize;
 }
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /*
 Name of function								: int WriteFile(int fd6, char *arr, int isize)
 Input parameters								: file descriptor, the data which is user wants o write in the file, size of the data in bytes.
@@ -719,7 +659,9 @@ int WriteFile(int fd6, char* arr, int isize)
 
 	return isize;
 }
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /*
 Name of function								: int fstat_file(char *name)
 Input parameters								: name of the file
@@ -765,7 +707,9 @@ int fstat_file(int fd7)
 	}
 	return 0;
 }
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /*
 Name of function								: int stat_file(char *name)
 Input parameters								: name of the file
@@ -819,7 +763,9 @@ int stat_file(char* name)
 	}
 	return 0;
 }
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /*
 Name of function								: int truncate_File(char *name)
 Input parameters								: name of the file
@@ -842,7 +788,9 @@ int truncate_File(char* name)
 
 	return 0;
 }
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /*
 Name of function								: void man(char *name)
 Input parameters								: name of the file
@@ -944,7 +892,9 @@ void man(char* name)
 		printf("\nERROR: No manual entry available.\n");		//invalid command
 	}
 }
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /*
 Name of function								: BOOL Authentication(char *username, char *password)
 Input parameters								: username entered by the user & password entered by the user
@@ -968,7 +918,9 @@ BOOL Authentication(char* username, char* password)
 		return FALSE;
 	}
 }
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /*
 int GetBackup()
 {

@@ -1,3 +1,5 @@
+//This is the header file in which we have included all the necessary header files and the prototypes for the project.
+
 #define _CRT_SECURE_NO_WARNINGS		//used to hide the warnings
 #include<stdio.h>
 #include<stdlib.h>
