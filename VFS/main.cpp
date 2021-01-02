@@ -84,6 +84,7 @@ void ls_file();
 int fstat_file(int);
 int stat_file(char*);
 int truncate_File(char*);
+int change_mode(char*, int);
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
 Name of function								: void InitialiseSuperBlock()
@@ -270,6 +271,7 @@ void DisplayHelp()
 	printf("fstat: To display the information of the file using file descriptor\n");
 	printf("truncate: To remove all data from the file\n");
 	printf("rm: To delete the file\n");
+	printf("chmod : To change the permissions of the existing file\n");
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
@@ -927,6 +929,13 @@ void man(char* name)
 		printf("Usage: rm file_name\n");
 		printf("e.g. rm Demo.txt\n");
 	}
+	else if (_stricmp(name, "chmod") == 0)			//list out all the files in the current directory
+	{
+		printf("Fescription : Used to change the permissions of the existing file\n");
+		printf("Usage: chmod filename mode\n");
+		printf("Mode:\nREAD = 1\nWRITE = 2\nREAD+WRITE = 3\n");
+		printf("e.g. chmod demo.txt 1\n");
+	}
 	else
 	{
 		printf("\nERROR: No manual entry available.\n");		//invalid command
@@ -1005,6 +1014,42 @@ int GetBackup()
 	return iRet;
 }
 */
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+int change_mode(char* name, int new_permissions)
+{
+	PINODE temp6 = head;
+
+	if ((name == NULL) || ((new_permissions <= 0) && (new_permissions > 3)))		//exceptions
+	{
+		return -1;
+	}
+
+	while (temp6 != NULL)
+	{
+		if (strcmp(name, temp6->FileName) == 0)		//file name is same, or existing the file which has same name
+		{
+			break;
+		}
+
+		temp6 = temp6->next;
+	}
+
+	if (temp6 == NULL)
+	{
+		return -2;
+	}
+	else if (temp6->permission == new_permissions)
+	{
+		return -3;
+	}
+
+	temp6->permission = new_permissions;
+
+	return 0;
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
 Name of function								: int main()
@@ -1137,7 +1182,12 @@ int main()
 
 			else if (_stricmp(command[0], "lseek") == 0)
 			{
-				printf("\nERROR : Insufficiient Arguments !!!\nUse 'man lseek' command.\n");
+				printf("\nERROR : Insufficient Arguments !!!\nUse 'man lseek' command.\n");
+			}
+
+			else if (_stricmp(command[0], "chmod") == 0)
+			{
+				printf("\nERROR : Insufficient Arguments !!!\nUse 'man chmod' command.\n");
 			}
 
 			else
@@ -1269,7 +1319,12 @@ int main()
 
 			else if (_stricmp(command[0], "lseek") == 0)
 			{
-				printf("\nERROR : Insufficiient Arguments !!!\nUse 'man lseek' command.\n");
+				printf("\nERROR : Insufficient Arguments !!!\nUse 'man lseek' command.\n");
+			}
+
+			else if (_stricmp(command[0], "chmod") == 0)
+			{
+				printf("\nERROR : Insufficient Arguments !!!\nUse 'man chmod' command.\n");
 			}
 
 			else
@@ -1313,8 +1368,6 @@ int main()
 				{
 					printf("ERROR : Memory allocation failure\n");
 				}
-
-				continue;
 			}
 
 			else if (_stricmp(command[0], "open") == 0)
@@ -1340,8 +1393,6 @@ int main()
 				{
 					printf("ERROR : Permission Denied\n");
 				}
-
-				continue;
 			}
 
 			else if (_stricmp(command[0], "read") == 0)
@@ -1393,20 +1444,41 @@ int main()
 				{
 					printf("ERROR : File is empty\n");
 				}
+			}
 
-				continue;
+			else if (_stricmp(command[0], "chmod") == 0)
+			{
+				ret = change_mode(command[1], atoi(command[2]));
+
+				if (ret == 0)
+				{
+					printf("Permissions has been changed successfully...\n");
+				}
+				else if (ret == -1)
+				{
+					printf("ERROR : Incorrect Parameters\nUse 'man chmod' command");
+				}
+				else if (ret == -2)
+				{
+					printf("ERROR : File does not exists !!!\n");
+				}
+				else if (ret == -3)
+				{
+					printf("ERROR : Old permissions and new permissions cannot be same\n");
+				}
 			}
 
 			else if (_stricmp(command[0], "lseek") == 0)
 			{
-				printf("\nERROR : Insufficiient Arguments !!!\nUse 'man lseek' command.\n");
+				printf("\nERROR : Insufficient Arguments !!!\nUse 'man lseek' command.\n");
 			}
 
 			else
 			{
 				printf("\nERROR : Command not found!!!!!\n");
-				continue;
 			}
+
+			continue;
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1433,7 +1505,6 @@ int main()
 			else
 			{
 				printf("\nERROR:Command Not found!!!\n");
-				continue;
 			}
 		}
 
