@@ -541,12 +541,13 @@ int CloseFileByName2(char* name)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*
-Name of function								: void CloseAllFile()
+Name of function								: void CloseAllFiles()
 Input parameters								: none
 Return value of function						: void - which returns nothing
 Description of function and its use in project	: This function closes all the opened files.
 */
-void CloseAllFile()
+
+void CloseAllFiles()
 {
 	int p = 0;
 	while (p < MAXINODE)
@@ -663,12 +664,12 @@ int WriteFile(int fd6, char* arr, int isize)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*
-Name of function								: int fstat_file(char *name)
+Name of function								: int fstatFile(char *name)
 Input parameters								: name of the file
 Return value of function						: returns the statistical information of the file
 Description of function and its use in project	: In this function, we accept the file name from user to display the statistical information of the file.
 */
-int fstat_file(int fd7)
+int fstatFile(int fd7)
 {
 	PINODE temp4 = head;
 	int r = 0;
@@ -711,12 +712,12 @@ int fstat_file(int fd7)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*
-Name of function								: int stat_file(char *name)
+Name of function								: int statFile(char *name)
 Input parameters								: name of the file
 Return value of function						: returns the statistical information of the file
 Description of function and its use in project	: In this function, we accept the file name from user to display the statistical information of the file.
 */
-int stat_file(char* name)
+int statFile(char* name)
 {
 	PINODE temp5 = head;
 	int t = 0;
@@ -767,12 +768,12 @@ int stat_file(char* name)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*
-Name of function								: int truncate_File(char *name)
+Name of function								: int TruncateFile(char *name)
 Input parameters								: name of the file
 Return value of function						: int
 Description of function and its use in project	: This function is used to delete all the data writen in the file.
 */
-int truncate_File(char* name)
+int TruncateFile(char* name)
 {
 	int fd8 = GetFDFromName(name);
 
@@ -903,7 +904,7 @@ Description of function and its use in project  : In this function, we are accep
 												  with the username and password which is stored inside the database or function.
 												  It will return TRUE if both username and password entered by the user matches the original username and password,
 												  else it will return FALSE.
-*/
+
 BOOL Authentication(char* username, char* password)
 {
 	char name[] = "user";
@@ -917,7 +918,7 @@ BOOL Authentication(char* username, char* password)
 	{
 		return FALSE;
 	}
-}
+}*/
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -972,7 +973,7 @@ int GetBackup()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-int change_mode(char* name, int new_permissions)
+int ChangeMode(char* name, int new_permissions)
 {
 	PINODE temp6 = head;
 
@@ -1006,6 +1007,35 @@ int change_mode(char* name, int new_permissions)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//int CreateHardLink(char* old_name, char* new_name)
+//{
+//	PINODE temp = head;
+//	if ((old_name == NULL) || (new_name == NULL))
+//	{
+//		return -1;
+//	}
+//	if (Get_Inode(old_name) != NULL)		//old file name already exists or not
+//	{
+//		return -2;
+//	}
+//	if (Get_Inode(new_name) != NULL)		//new file name already exists or not
+//	{
+//		return -3;
+//	}
+//	while (temp != NULL)
+//	{
+//		if (temp->FileType == 0)
+//		{
+//			break;
+//		}
+//
+//		temp = temp->next;
+//	}
+//}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /*
 Name of function								: int main()
 Input parameters								: none
@@ -1046,6 +1076,7 @@ int main()
 	}*/
 
 	printf("\n******************* Welcome to the Virtual File System *******************\n");
+
 	while (1)
 	{
 		fflush(stdin);				//flush the input buffer
@@ -1066,7 +1097,7 @@ int main()
 
 			else if (_stricmp(command[0], "closeall") == 0)
 			{
-				CloseAllFile();
+				CloseAllFiles();
 				printf("All files closed successfully\n");
 			}
 
@@ -1159,7 +1190,7 @@ int main()
 		{
 			if (_stricmp(command[0], "stat") == 0)							//stat
 			{
-				ret = stat_file(command[1]);
+				ret = statFile(command[1]);
 
 				if (ret == -1)
 				{
@@ -1174,7 +1205,7 @@ int main()
 
 			else if (_stricmp(command[0], "fstat") == 0)					//fstat
 			{
-				ret = fstat_file(atoi(command[1]));
+				ret = fstatFile(atoi(command[1]));
 
 				if (ret == -1)
 				{
@@ -1259,7 +1290,7 @@ int main()
 
 			else if (_stricmp(command[0], "truncate") == 0)
 			{
-				ret = truncate_File(command[1]);
+				ret = TruncateFile(command[1]);
 
 				if (ret == -1)
 				{
@@ -1280,6 +1311,46 @@ int main()
 			else if (_stricmp(command[0], "chmod") == 0)
 			{
 				printf("\nERROR : Insufficient Arguments !!!\nUse 'man chmod' command.\n");
+			}
+
+			else if (_stricmp(command[0], "create") == 0)
+			{
+				printf("\nERROR : Insufficient Arguments !!!\nUse 'man create' command.\n");
+			}
+
+			else if (_stricmp(command[0], "open") == 0)
+			{
+				printf("\nERROR : Insufficient Arguments !!!\nUse 'man open' command.\n");
+			}
+
+			else if (_stricmp(command[0], "read") == 0)
+			{
+				printf("\nERROR : Insufficient Arguments !!!\nUse 'man read' command.\n");
+			}
+
+			else if (_stricmp(command[0], "ls") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
+			else if (_stricmp(command[0], "closeall") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
+			else if (_stricmp(command[0], "clear") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
+			else if (_stricmp(command[0], "help") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
+			else if (_stricmp(command[0], "exit") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
 			}
 
 			else
@@ -1403,7 +1474,7 @@ int main()
 
 			else if (_stricmp(command[0], "chmod") == 0)
 			{
-				ret = change_mode(command[1], atoi(command[2]));
+				ret = ChangeMode(command[1], atoi(command[2]));
 
 				if (ret == 0)
 				{
@@ -1428,6 +1499,66 @@ int main()
 				printf("\nERROR : Insufficient Arguments !!!\nUse 'man lseek' command.\n");
 			}
 
+			else if (_stricmp(command[0], "ls") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
+			else if (_stricmp(command[0], "closeall") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
+			else if (_stricmp(command[0], "clear") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
+			else if (_stricmp(command[0], "help") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
+			else if (_stricmp(command[0], "exit") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
+			else if (_stricmp(command[0], "stat") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
+			else if (_stricmp(command[0], "fstat") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
+			else if (_stricmp(command[0], "close") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
+			else if (_stricmp(command[0], "rm") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
+			else if (_stricmp(command[0], "man") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
+			else if (_stricmp(command[0], "write") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
+			else if (_stricmp(command[0], "truncate") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+			
 			else
 			{
 				printf("\nERROR : Command not found!!!!!\n");
@@ -1457,6 +1588,86 @@ int main()
 					printf("ERROR: Unable to perform lseek\n");
 				}
 			}
+
+			else if (_stricmp(command[0], "ls") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
+			else if (_stricmp(command[0], "closeall") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
+			else if (_stricmp(command[0], "clear") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
+			else if (_stricmp(command[0], "help") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+			else if (_stricmp(command[0], "exit") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
+			else if (_stricmp(command[0], "stat") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
+			else if (_stricmp(command[0], "fstat") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
+			else if (_stricmp(command[0], "close") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
+			else if (_stricmp(command[0], "rm") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
+			else if (_stricmp(command[0], "man") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
+			else if (_stricmp(command[0], "write") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
+			else if (_stricmp(command[0], "truncate") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
+			else if (_stricmp(command[0], "create") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
+			else if (_stricmp(command[0], "open") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
+			else if (_stricmp(command[0], "read") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
+			else if (_stricmp(command[0], "chmod") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
 			else
 			{
 				printf("\nERROR:Command Not found!!!\n");
@@ -1467,7 +1678,95 @@ int main()
 
 		else
 		{
-			printf("\n ERROR: Command not found!!!\n");
+			if (_stricmp(command[0], "ls") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
+			else if (_stricmp(command[0], "closeall") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
+			else if (_stricmp(command[0], "clear") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
+			else if (_stricmp(command[0], "help") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+			else if (_stricmp(command[0], "exit") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
+			else if (_stricmp(command[0], "stat") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
+			else if (_stricmp(command[0], "fstat") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
+			else if (_stricmp(command[0], "close") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
+			else if (_stricmp(command[0], "rm") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
+			else if (_stricmp(command[0], "man") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
+			else if (_stricmp(command[0], "write") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
+			else if (_stricmp(command[0], "truncate") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
+			else if (_stricmp(command[0], "create") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
+			else if (_stricmp(command[0], "open") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
+			else if (_stricmp(command[0], "read") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
+			else if (_stricmp(command[0], "lseek") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
+			else if (_stricmp(command[0], "chmod") == 0)
+			{
+				printf("Error: Incorrect parameters\n");
+			}
+
+			else
+			{
+				printf("\nERROR: Command not found!!!\n");
+			}
+
 			continue;
 		}
 	}
